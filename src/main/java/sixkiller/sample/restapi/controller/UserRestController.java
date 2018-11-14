@@ -64,18 +64,23 @@ public class UserRestController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResource> createUser(@Validated @RequestBody CreateUserDto userDto) {
 
-        if (userService.findByUserName(userDto.getUserName()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
-
-        User savedUser = userService.save(userDto);
-
-        return ResponseEntity.created(
-                linkTo(methodOn(UserRestController.class).getUser(savedUser.getUserName()))
-                        .toUri()
-        ).body(
-                new UserResource(savedUser)
-        );
+         try {
+           if (userService.findByUserName(userDto.getUserName()).isPresent()) {
+               return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+           }
+   
+           User savedUser = userService.save(userDto);
+   
+           return ResponseEntity.created(
+                   linkTo(methodOn(UserRestController.class).getUser(savedUser.getUserName()))
+                           .toUri()
+           ).body(
+                   new UserResource(savedUser)
+           );
+         } catch (Exception ex) {
+              System.err.println("Exception when creating users: " + ex.getMessage());
+         }
+         return null;
     }
 
     @PreAuthorize(ADMIN)
