@@ -23,7 +23,36 @@ public class MiengDat {
      private String thanhtien;
      private String tenduong;
      private String logioi;
+     private String status;
+     private String toado;
      private String ghichu;
+     private String createdBy;
+     private String modifiedBy;
+     
+     public String getCreatedBy() {
+          return createdBy;
+     }
+     public void setCreatedBy(String createdBy) {
+          this.createdBy = createdBy;
+     }
+     public String getModifiedBy() {
+          return modifiedBy;
+     }
+     public void setModifiedBy(String modifiedBy) {
+          this.modifiedBy = modifiedBy;
+     }
+     public String getStatus() {
+          return status;
+     }
+     public void setStatus(String status) {
+          this.status = status;
+     }
+     public String getToado() {
+          return toado;
+     }
+     public void setToado(String toado) {
+          this.toado = toado;
+     }
      public String getLoso() {
           return loso;
      }
