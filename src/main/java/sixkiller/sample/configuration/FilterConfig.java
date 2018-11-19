@@ -11,10 +11,10 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import java.util.Properties;
 
-@Configuration
+//@Configuration
 public class FilterConfig {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(FilterConfig.class);
+   /* public static final Logger LOGGER = LoggerFactory.getLogger(FilterConfig.class);
 
     @Bean
     public ShallowEtagHeaderFilter shallowEtagHeaderFilter() {
@@ -33,8 +33,8 @@ public class FilterConfig {
 
         properties.setProperty("cors.allowGenericHttpRequests", "true");
         properties.setProperty("cors.allowOrigin", "*");
-        properties.setProperty("cors.supportedMethods", "true");
-        properties.setProperty("cors.GET, HEAD, POST, DELETE, OPTIONS", "true");
+        properties.setProperty("cors.supportedMethods", "GET, HEAD, POST, DELETE, OPTIONS, PUT");
+//        properties.setProperty("cors.GET, HEAD, POST, DELETE, OPTIONS, PUT", "true");
         properties.setProperty("cors.supportedHeaders", "*");
         properties.setProperty("cors.supportsCredentials", "true");
         properties.setProperty("cors.maxAge", "3600");
@@ -49,6 +49,6 @@ public class FilterConfig {
 
             return null;
         }
-    }
+    }*/
 
 }

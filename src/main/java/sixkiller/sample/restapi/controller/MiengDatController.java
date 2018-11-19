@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,10 @@ public class MiengDatController {
      
      @RequestMapping(method = RequestMethod.PUT)
      public ResponseEntity<MiengDat> update(@RequestBody MiengDat data) {
-          MiengDat miengdat = service.save(data);
-          return new ResponseEntity<MiengDat>(miengdat, HttpStatus.OK);
+          MiengDat miengdat = service.getByLoso(data.getLoso());
+          BeanUtils.copyProperties(data, miengdat);
+          MiengDat saved = service.save(miengdat);
+          return new ResponseEntity<MiengDat>(saved, HttpStatus.OK);
      }
      
      @RequestMapping(method = RequestMethod.GET)
