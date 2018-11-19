@@ -41,6 +41,12 @@ public class MiengDatController {
           return new ResponseEntity<MiengDat>(miengdat, HttpStatus.OK);
      }
      
+     @RequestMapping(method = RequestMethod.GET)
+     public ResponseEntity<MiengDat> get(@RequestParam("loso") String loso) {
+          MiengDat miengdat = service.getByLoso(loso);
+          return new ResponseEntity<MiengDat>(miengdat, HttpStatus.OK);
+     }
+     
      @RequestMapping(value="/excel", method = RequestMethod.POST)
      public ResponseEntity<String> updateByExcel(@RequestParam("file") MultipartFile file) throws IOException {
           
