@@ -19,10 +19,20 @@ public class CreateUserDto {
     @NotNull
     @Size(min = 1)
     private String password;
+    
+    private String[] roles;
 
-    public String getFullName() {
-        return fullName;
-    }
+    public String[] getRoles() {
+     return roles;
+     }
+
+     public void setRoles(String[] roles) {
+          this.roles = roles;
+     }
+
+     public String getFullName() {
+          return fullName;
+     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;

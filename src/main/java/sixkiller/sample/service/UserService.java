@@ -65,8 +65,11 @@ public class UserService {
         user.setPassword(
                 encryptPassword(userDto.getPassword())
         );
-
-        user.setRoles(configurationProperties.getDefaultUserRoles());
+        if (userDto.getRoles() != null && userDto.getRoles().length > 0) {
+             user.setRoles(userDto.getRoles());
+        } else {
+             user.setRoles(configurationProperties.getDefaultUserRoles());
+        }
     }
 
     private void updateUser(User user, ModifyUserDto userDto) {
