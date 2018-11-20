@@ -1,7 +1,9 @@
 package sixkiller.sample.restapi.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import sixkiller.sample.common.Constants;
+import sixkiller.sample.common.response.CommonResponseBody;
 import sixkiller.sample.domain.MiengDat;
 import sixkiller.sample.service.MiengDatService;
 
@@ -31,23 +35,32 @@ public class MiengDatController {
      private MiengDatService service;
      
      @RequestMapping(method = RequestMethod.POST)
-     public ResponseEntity<MiengDat> insert(@RequestBody MiengDat data) {
+     public ResponseEntity<CommonResponseBody> insert(@RequestBody MiengDat data) {
           MiengDat miengdat = service.save(data);
-          return new ResponseEntity<MiengDat>(miengdat, HttpStatus.OK);
+          CommonResponseBody body = new CommonResponseBody();
+          body.setError(Constants.SUCCESS_CODE);
+          body.setData(miengdat);
+          return new ResponseEntity<CommonResponseBody>(body, HttpStatus.OK);
      }
      
      @RequestMapping(method = RequestMethod.PUT)
-     public ResponseEntity<MiengDat> update(@RequestBody MiengDat data) {
+     public ResponseEntity<CommonResponseBody> update(@RequestBody MiengDat data) {
           MiengDat miengdat = service.getByLoso(data.getLoso());
           BeanUtils.copyProperties(data, miengdat);
           MiengDat saved = service.save(miengdat);
-          return new ResponseEntity<MiengDat>(saved, HttpStatus.OK);
+          CommonResponseBody body = new CommonResponseBody();
+          body.setError(Constants.SUCCESS_CODE);
+          body.setData(saved);
+          return new ResponseEntity<CommonResponseBody>(body, HttpStatus.OK);
      }
      
      @RequestMapping(method = RequestMethod.GET)
-     public ResponseEntity<MiengDat> get(@RequestParam("loso") String loso) {
+     public ResponseEntity<CommonResponseBody> get(@RequestParam("loso") String loso) {
           MiengDat miengdat = service.getByLoso(loso);
-          return new ResponseEntity<MiengDat>(miengdat, HttpStatus.OK);
+          CommonResponseBody body = new CommonResponseBody();
+          body.setError(Constants.SUCCESS_CODE);
+          body.setData(miengdat);
+          return new ResponseEntity<CommonResponseBody>(body, HttpStatus.OK);
      }
      
      @RequestMapping(value="/excel", method = RequestMethod.POST)
@@ -59,6 +72,7 @@ public class MiengDatController {
 
           int row = 1;
           int cell = 1;
+          List<MiengDat> returnLst = new ArrayList<>();
           while (iterator.hasNext()) {
               
               Row currentRow = iterator.next();
@@ -98,12 +112,15 @@ public class MiengDatController {
                   cell++;
               }
               if (miengdat != null) {
-                   service.save(miengdat);
+                   miengdat = service.save(miengdat);
+                   returnLst.add(miengdat);
               }
               cell = 1;
               row++; 
           }
-          
+          CommonResponseBody body = new CommonResponseBody();
+          body.setError(Constants.SUCCESS_CODE);
+          body.setData(returnLst);
           return new ResponseEntity<String>("OK", HttpStatus.OK);
      }
 }

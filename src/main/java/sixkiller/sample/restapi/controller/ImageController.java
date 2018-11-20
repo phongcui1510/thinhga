@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import sixkiller.sample.common.Constants;
+import sixkiller.sample.common.response.CommonResponseBody;
 import sixkiller.sample.domain.MiengDat;
 import sixkiller.sample.service.MiengDatService;
 
@@ -28,16 +30,19 @@ public class ImageController {
      private MiengDatService service;
      
      @RequestMapping(value="/{loso}", method = RequestMethod.POST)
-     public ResponseEntity<MiengDat> updateByExcel(@PathVariable("loso") String loso, @RequestParam("file") MultipartFile file) throws IOException {
+     public ResponseEntity<CommonResponseBody> updateByExcel(@PathVariable("loso") String loso, @RequestParam("file") MultipartFile file) throws IOException {
           Map config = new HashMap();
-          config.put("cloud_name", "dzaw69uyz");
-          config.put("api_key", "478126742867875");
-          config.put("api_secret", "egTQhC0kJ0HgftnncVOShAtDNLU");
+          config.put("cloud_name", Constants.CLOUDINARY_NAME);
+          config.put("api_key", Constants.CLOUDINARY_API_KEY);
+          config.put("api_secret", Constants.CLOUDINARY_API_SECRET);
           Cloudinary cloudinary = new Cloudinary(config);
           Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
           MiengDat miengdat = service.getByLoso(loso);
           miengdat.setDiagram(uploadResult);
           miengdat = service.save(miengdat);
-          return new ResponseEntity<MiengDat>(miengdat, HttpStatus.OK);
+          CommonResponseBody body = new CommonResponseBody();
+          body.setError(Constants.SUCCESS_CODE);
+          body.setData(miengdat);
+          return new ResponseEntity<CommonResponseBody>(body, HttpStatus.OK);
      }
 }
