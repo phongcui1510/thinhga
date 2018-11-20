@@ -3,6 +3,9 @@
  */
 package sixkiller.sample.domain;
 
+import java.util.Date;
+import java.util.Map;
+
 import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,9 +29,30 @@ public class MiengDat {
      private String status;
      private String toado;
      private String ghichu;
+     private Map diagram;
      private String createdBy;
+     private Date createdDate;
      private String modifiedBy;
+     private Date modifiedDate;
      
+     public Map getDiagram() {
+          return diagram;
+     }
+     public void setDiagram(Map diagram) {
+          this.diagram = diagram;
+     }
+     public Date getCreatedDate() {
+          return createdDate;
+     }
+     public void setCreatedDate(Date createdDate) {
+          this.createdDate = createdDate;
+     }
+     public Date getModifiedDate() {
+          return modifiedDate;
+     }
+     public void setModifiedDate(Date modifiedDate) {
+          this.modifiedDate = modifiedDate;
+     }
      public String getCreatedBy() {
           return createdBy;
      }
