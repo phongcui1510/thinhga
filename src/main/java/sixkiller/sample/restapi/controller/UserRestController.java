@@ -61,7 +61,7 @@ public class UserRestController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value="/register", method = RequestMethod.POST)
     public ResponseEntity<UserResource> createUser(@Validated @RequestBody CreateUserDto userDto) {
 
          try {
