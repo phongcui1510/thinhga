@@ -28,6 +28,8 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
                .antMatchers("/api/miengdat/**").authenticated()
                .anyRequest().permitAll()
                .and()
-               .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+               .exceptionHandling()
+               .accessDeniedHandler(accessDeniedHandler);
+               
      }
 }

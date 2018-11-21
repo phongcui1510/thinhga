@@ -13,8 +13,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,48 +22,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import sixkiller.sample.common.Constants;
-import sixkiller.sample.common.response.CommonResponseBody;
 import sixkiller.sample.domain.MiengDat;
+import sixkiller.sample.exception.SystemException;
 import sixkiller.sample.service.MiengDatService;
 
 @RestController
 @RequestMapping("/api/miengdat")
-public class MiengDatController {
+public class MiengDatController extends BaseController {
      
      @Autowired
      private MiengDatService service;
      
-     @RequestMapping(method = RequestMethod.POST)
-     public ResponseEntity<CommonResponseBody> insert(@RequestBody MiengDat data) {
+     @RequestMapping(method = RequestMethod.POST, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+     public ResponseEntity<String> insert(@RequestBody MiengDat data) {
           MiengDat miengdat = service.save(data);
-          CommonResponseBody body = new CommonResponseBody();
-          body.setError(Constants.SUCCESS_CODE);
-          body.setData(miengdat);
-          return new ResponseEntity<CommonResponseBody>(body, HttpStatus.OK);
+          return buildSuccess(miengdat);
      }
      
-     @RequestMapping(method = RequestMethod.PUT)
-     public ResponseEntity<CommonResponseBody> update(@RequestBody MiengDat data) {
+     @RequestMapping(method = RequestMethod.PUT, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+     public ResponseEntity<String> update(@RequestBody MiengDat data) throws SystemException {
           MiengDat miengdat = service.getByLoso(data.getLoso());
           BeanUtils.copyProperties(data, miengdat);
           MiengDat saved = service.save(miengdat);
-          CommonResponseBody body = new CommonResponseBody();
-          body.setError(Constants.SUCCESS_CODE);
-          body.setData(saved);
-          return new ResponseEntity<CommonResponseBody>(body, HttpStatus.OK);
+          return buildSuccess(saved);
      }
      
-     @RequestMapping(method = RequestMethod.GET)
-     public ResponseEntity<CommonResponseBody> get(@RequestParam("loso") String loso) {
+     @RequestMapping(method = RequestMethod.GET,produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+     public ResponseEntity<String> get(@RequestParam("loso") String loso) {
           MiengDat miengdat = service.getByLoso(loso);
-          CommonResponseBody body = new CommonResponseBody();
-          body.setError(Constants.SUCCESS_CODE);
-          body.setData(miengdat);
-          return new ResponseEntity<CommonResponseBody>(body, HttpStatus.OK);
+          return buildSuccess(miengdat);
      }
      
-     @RequestMapping(value="/excel", method = RequestMethod.POST)
+     @RequestMapping(value="/excel", method = RequestMethod.POST, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
      public ResponseEntity<String> updateByExcel(@RequestParam("file") MultipartFile file) throws IOException {
           
           Workbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -118,9 +108,7 @@ public class MiengDatController {
               cell = 1;
               row++; 
           }
-          CommonResponseBody body = new CommonResponseBody();
-          body.setError(Constants.SUCCESS_CODE);
-          body.setData(returnLst);
-          return new ResponseEntity<String>("OK", HttpStatus.OK);
+          return buildSuccess(returnLst);
      }
+     
 }
