@@ -1,5 +1,7 @@
 package sixkiller.sample.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +20,9 @@ public class MiengDatService {
      
      public MiengDat getByLoso (String loso) {
           return repository.findByLoso(loso);
+     }
+     
+     public List<MiengDat> findAll () {
+          return repository.findAll();
      }
 }

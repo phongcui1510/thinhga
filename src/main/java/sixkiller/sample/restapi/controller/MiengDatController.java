@@ -53,6 +53,12 @@ public class MiengDatController extends BaseController {
           return buildSuccess(miengdat);
      }
      
+     @RequestMapping(value="/list", method = RequestMethod.GET,produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+     public ResponseEntity<String> list() {
+          List<MiengDat> miengdat = service.findAll();
+          return buildSuccess(miengdat);
+     }
+     
      @RequestMapping(value="/excel", method = RequestMethod.POST, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
      public ResponseEntity<String> updateByExcel(@RequestParam("file") MultipartFile file) throws IOException {
           
