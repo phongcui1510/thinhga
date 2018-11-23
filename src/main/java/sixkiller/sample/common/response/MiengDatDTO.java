@@ -1,27 +1,12 @@
-/**
- * 
- */
-package sixkiller.sample.domain;
+package sixkiller.sample.common.response;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.Id;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import sixkiller.sample.common.response.MiengDatDTO;
-
-/**
- * @author Phong
- *
- */
-public class MiengDat {
-     @Id
-     @JsonIgnore
+public class MiengDatDTO implements Serializable {
+     private static final long serialVersionUID = 1L;
      private String id;
-     private String code;
      private String loso;
      private String sothuatheosodo;
      private String soto;
@@ -40,59 +25,11 @@ public class MiengDat {
      private String modifiedBy;
      private Date modifiedDate;
      
-     public String getCode() {
-          return code;
+     public String getId() {
+          return id;
      }
-     public void setCode(String code) {
-          this.code = code;
-     }
-     public String getProjectId() {
-          return projectId;
-     }
-     public void setProjectId(String projectId) {
-          this.projectId = projectId;
-     }
-     public Map getDiagram() {
-          return diagram;
-     }
-     public void setDiagram(Map diagram) {
-          this.diagram = diagram;
-     }
-     public Date getCreatedDate() {
-          return createdDate;
-     }
-     public void setCreatedDate(Date createdDate) {
-          this.createdDate = createdDate;
-     }
-     public Date getModifiedDate() {
-          return modifiedDate;
-     }
-     public void setModifiedDate(Date modifiedDate) {
-          this.modifiedDate = modifiedDate;
-     }
-     public String getCreatedBy() {
-          return createdBy;
-     }
-     public void setCreatedBy(String createdBy) {
-          this.createdBy = createdBy;
-     }
-     public String getModifiedBy() {
-          return modifiedBy;
-     }
-     public void setModifiedBy(String modifiedBy) {
-          this.modifiedBy = modifiedBy;
-     }
-     public String getStatus() {
-          return status;
-     }
-     public void setStatus(String status) {
-          this.status = status;
-     }
-     public String getToado() {
-          return toado;
-     }
-     public void setToado(String toado) {
-          this.toado = toado;
+     public void setId(String id) {
+          this.id = id;
      }
      public String getLoso() {
           return loso;
@@ -142,16 +79,59 @@ public class MiengDat {
      public void setLogioi(String logioi) {
           this.logioi = logioi;
      }
+     public String getStatus() {
+          return status;
+     }
+     public void setStatus(String status) {
+          this.status = status;
+     }
+     public String getToado() {
+          return toado;
+     }
+     public void setToado(String toado) {
+          this.toado = toado;
+     }
      public String getGhichu() {
           return ghichu;
      }
      public void setGhichu(String ghichu) {
           this.ghichu = ghichu;
      }
-     public MiengDatDTO toDTO () {
-          MiengDatDTO dto = new MiengDatDTO();
-          BeanUtils.copyProperties(this, dto);
-          dto.setId(this.getCode());
-          return dto;
+     public Map getDiagram() {
+          return diagram;
      }
+     public void setDiagram(Map diagram) {
+          this.diagram = diagram;
+     }
+     public String getProjectId() {
+          return projectId;
+     }
+     public void setProjectId(String projectId) {
+          this.projectId = projectId;
+     }
+     public String getCreatedBy() {
+          return createdBy;
+     }
+     public void setCreatedBy(String createdBy) {
+          this.createdBy = createdBy;
+     }
+     public Date getCreatedDate() {
+          return createdDate;
+     }
+     public void setCreatedDate(Date createdDate) {
+          this.createdDate = createdDate;
+     }
+     public String getModifiedBy() {
+          return modifiedBy;
+     }
+     public void setModifiedBy(String modifiedBy) {
+          this.modifiedBy = modifiedBy;
+     }
+     public Date getModifiedDate() {
+          return modifiedDate;
+     }
+     public void setModifiedDate(Date modifiedDate) {
+          this.modifiedDate = modifiedDate;
+     }
+     
 }

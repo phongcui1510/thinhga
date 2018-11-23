@@ -18,11 +18,11 @@ public class MiengDatService {
           return repository.save(entity);
      }
      
-     public MiengDat getByLoso (String loso) {
-          return repository.findByLoso(loso);
+     public MiengDat getByCode (String code) {
+          return repository.findByCode(code);
      }
      
-     public List<MiengDat> findAll () {
-          return repository.findAll();
+     public List<MiengDat> findByProjectId (String projectId) {
+          return repository.findByProjectId(projectId);
      }
 }

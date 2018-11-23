@@ -9,6 +9,13 @@ public class Image implements Serializable  {
      private Integer height;
      private String format;
      private Integer bytes;
+     private Integer sequence;
+     public Integer getSequence() {
+          return sequence;
+     }
+     public void setSequence(Integer sequence) {
+          this.sequence = sequence;
+     }
      public String getUrl() {
           return url;
      }

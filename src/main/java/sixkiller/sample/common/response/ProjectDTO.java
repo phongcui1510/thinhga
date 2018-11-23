@@ -1,16 +1,15 @@
-package sixkiller.sample.domain;
+package sixkiller.sample.common.response;
 
+import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.Id;
+import sixkiller.sample.domain.Address;
+import sixkiller.sample.domain.Diagram;
+import sixkiller.sample.domain.User;
 
-import sixkiller.sample.common.response.ProjectDTO;
-
-public class Project {
-     @Id
+public class ProjectDTO implements Serializable {
+     private static final long serialVersionUID = 1L;
      private String id;
-     private String code;
      private String name;
      private Address address;
      private String owner;
@@ -20,11 +19,11 @@ public class Project {
      private Diagram diagramImage;
      private List<User> admins;
      private List<User> salers;
-     public String getCode() {
-          return code;
+     public String getId() {
+          return id;
      }
-     public void setCode(String code) {
-          this.code = code;
+     public void setId(String id) {
+          this.id = id;
      }
      public String getName() {
           return name;
@@ -80,10 +79,5 @@ public class Project {
      public void setSalers(List<User> salers) {
           this.salers = salers;
      }
-     public ProjectDTO toDTO () {
-          ProjectDTO dto = new ProjectDTO();
-          BeanUtils.copyProperties(this, dto);
-          dto.setId(this.getCode());
-          return dto;
-     }
+     
 }

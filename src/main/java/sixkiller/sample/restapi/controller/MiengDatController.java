@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import sixkiller.sample.common.ProjectUtil;
+import sixkiller.sample.common.response.MiengDatDTO;
 import sixkiller.sample.domain.MiengDat;
 import sixkiller.sample.exception.SystemException;
 import sixkiller.sample.service.MiengDatService;
@@ -35,28 +39,38 @@ public class MiengDatController extends BaseController {
      
      @RequestMapping(method = RequestMethod.POST, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
      public ResponseEntity<String> insert(@RequestBody MiengDat data) {
+          if (StringUtils.isEmpty(data.getProjectId())) {
+               return buildFailure("400", "Nhập ID của dự án");
+          }
+          data.setCode(ProjectUtil.generateMiengdatCode(data.getProjectId()));
           MiengDat miengdat = service.save(data);
-          return buildSuccess(miengdat);
+          return buildSuccess(miengdat.toDTO());
      }
      
      @RequestMapping(method = RequestMethod.PUT, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
      public ResponseEntity<String> update(@RequestBody MiengDat data) throws SystemException {
-          MiengDat miengdat = service.getByLoso(data.getLoso());
+          MiengDat miengdat = service.getByCode(data.getCode());
           BeanUtils.copyProperties(data, miengdat);
           MiengDat saved = service.save(miengdat);
-          return buildSuccess(saved);
+          return buildSuccess(saved.toDTO());
      }
      
      @RequestMapping(method = RequestMethod.GET,produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-     public ResponseEntity<String> get(@RequestParam("loso") String loso) {
-          MiengDat miengdat = service.getByLoso(loso);
-          return buildSuccess(miengdat);
+     public ResponseEntity<String> get(@RequestParam("id") String id) {
+          MiengDat miengdat = service.getByCode(id);
+          return buildSuccess(miengdat.toDTO());
      }
      
      @RequestMapping(value="/list", method = RequestMethod.GET,produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-     public ResponseEntity<String> list() {
-          List<MiengDat> miengdat = service.findAll();
-          return buildSuccess(miengdat);
+     public ResponseEntity<String> list(@RequestParam("projectId") String projectId) {
+          List<MiengDat> miengdat = service.findByProjectId(projectId);
+          List<MiengDatDTO> dtos = new ArrayList<>();
+          if (CollectionUtils.isNotEmpty(miengdat)) {
+               for (MiengDat m : miengdat) {
+                    dtos.add(m.toDTO());
+               }
+          }
+          return buildSuccess(dtos);
      }
      
      @RequestMapping(value="/excel", method = RequestMethod.POST, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
@@ -68,7 +82,7 @@ public class MiengDatController extends BaseController {
 
           int row = 1;
           int cell = 1;
-          List<MiengDat> returnLst = new ArrayList<>();
+          List<MiengDatDTO> returnLst = new ArrayList<MiengDatDTO>();
           while (iterator.hasNext()) {
               
               Row currentRow = iterator.next();
@@ -81,7 +95,7 @@ public class MiengDatController extends BaseController {
                   if (currentCell.getCellTypeEnum() == CellType.STRING) {
                       System.out.print(currentCell.getStringCellValue() + "--");
                       if (cell == 1) {
-                           miengdat = service.getByLoso(currentCell.getStringCellValue());
+                           miengdat = service.getByCode(currentCell.getStringCellValue());
                       } else if (miengdat != null) {
                            if (cell == 2) {
                                 miengdat.setSothuatheosodo(currentCell.getStringCellValue());
@@ -109,7 +123,7 @@ public class MiengDatController extends BaseController {
               }
               if (miengdat != null) {
                    miengdat = service.save(miengdat);
-                   returnLst.add(miengdat);
+                   returnLst.add(miengdat.toDTO());
               }
               cell = 1;
               row++; 
