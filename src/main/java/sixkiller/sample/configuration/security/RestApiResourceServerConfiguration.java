@@ -26,6 +26,7 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
           http.csrf().disable()
                .authorizeRequests()
                .antMatchers("/api/miengdat/**").authenticated()
+               .antMatchers("/api/project/**").authenticated()
                .anyRequest().permitAll()
                .and()
                .exceptionHandling()

@@ -30,11 +30,18 @@ public class MiengDat {
      private String toado;
      private String ghichu;
      private Map diagram;
+     private String projectCode;
      private String createdBy;
      private Date createdDate;
      private String modifiedBy;
      private Date modifiedDate;
      
+     public String getProjectCode() {
+          return projectCode;
+     }
+     public void setProjectCode(String projectCode) {
+          this.projectCode = projectCode;
+     }
      public Map getDiagram() {
           return diagram;
      }
