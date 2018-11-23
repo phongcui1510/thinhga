@@ -30,14 +30,14 @@ public class ImageController {
      private MiengDatService service;
      
      @RequestMapping(value="/{loso}", method = RequestMethod.POST)
-     public ResponseEntity<CommonResponseBody> updateByExcel(@PathVariable("loso") String loso, @RequestParam("file") MultipartFile file) throws IOException {
+     public ResponseEntity<CommonResponseBody> updateByExcel(@PathVariable("id") String code, @RequestParam("file") MultipartFile file) throws IOException {
           Map config = new HashMap();
           config.put("cloud_name", Constants.CLOUDINARY_NAME);
           config.put("api_key", Constants.CLOUDINARY_API_KEY);
           config.put("api_secret", Constants.CLOUDINARY_API_SECRET);
           Cloudinary cloudinary = new Cloudinary(config);
           Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-          MiengDat miengdat = service.getByLoso(loso);
+          MiengDat miengdat = service.getByCode(code);
           miengdat.setDiagram(uploadResult);
           miengdat = service.save(miengdat);
           CommonResponseBody body = new CommonResponseBody();
