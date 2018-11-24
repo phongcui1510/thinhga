@@ -12,4 +12,5 @@ public interface MiengDatRepository extends MongoRepository<MiengDat, String> {
      
      public MiengDat findByCode(String code);
      public List<MiengDat> findByProjectId(String projectId);
+     public MiengDat findByProjectIdAndLoso(String projectId, String loso);
 }

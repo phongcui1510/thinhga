@@ -50,7 +50,7 @@ public class ProjectController extends BaseController {
      }
 
      @RequestMapping(value="/diagrams", method = RequestMethod.POST, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-     public ResponseEntity<String> uploadDiagrams(@RequestParam("projectCode") String code, @RequestParam("row") Integer row, @RequestParam("col") Integer col,
+     public ResponseEntity<String> uploadDiagrams(@RequestParam("projectId") String code, @RequestParam("row") Integer row, @RequestParam("col") Integer col,
           @RequestParam("files") MultipartFile[] files) throws IOException {
           Project project = service.getByCode(code);
           if (project.getDiagramImage() != null) {
@@ -97,7 +97,7 @@ public class ProjectController extends BaseController {
      }
 
      @RequestMapping(value = "/diagram", method = RequestMethod.POST, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-     public ResponseEntity<String> uploadDiagram(@RequestParam("projectCode") String code,
+     public ResponseEntity<String> uploadDiagram(@RequestParam("projectId") String code,
           @RequestParam("file") MultipartFile file) throws IOException {
           Project project = service.getByCode(code);
           Map config = new HashMap();

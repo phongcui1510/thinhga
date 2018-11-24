@@ -74,7 +74,7 @@ public class MiengDatController extends BaseController {
      }
      
      @RequestMapping(value="/excel", method = RequestMethod.POST, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-     public ResponseEntity<String> updateByExcel(@RequestParam("file") MultipartFile file) throws IOException {
+     public ResponseEntity<String> updateByExcel(@RequestParam("projectId") String projectId, @RequestParam("file") MultipartFile file) throws IOException {
           
           Workbook workbook = new XSSFWorkbook(file.getInputStream());
           Sheet datatypeSheet = workbook.getSheetAt(0);
@@ -84,48 +84,49 @@ public class MiengDatController extends BaseController {
           int cell = 1;
           List<MiengDatDTO> returnLst = new ArrayList<MiengDatDTO>();
           while (iterator.hasNext()) {
-              
-              Row currentRow = iterator.next();
-              Iterator<Cell> cellIterator = currentRow.iterator();
+                Row currentRow = iterator.next();
+                Iterator<Cell> cellIterator = currentRow.iterator();
 
-              MiengDat miengdat = null;
-              while (cellIterator.hasNext()) {
-                   
-                  Cell currentCell = cellIterator.next();
-                  if (currentCell.getCellTypeEnum() == CellType.STRING) {
-                      System.out.print(currentCell.getStringCellValue() + "--");
-                      if (cell == 1) {
-                           miengdat = service.getByCode(currentCell.getStringCellValue());
-                      } else if (miengdat != null) {
-                           if (cell == 2) {
-                                miengdat.setSothuatheosodo(currentCell.getStringCellValue());
-                           } else if (cell == 3) {
-                                miengdat.setSoto(currentCell.getStringCellValue());
-                           } else if (cell == 4) {
-                                miengdat.setLoaidat(currentCell.getStringCellValue());
-                           } else if (cell == 5) {
-                                miengdat.setDientich(currentCell.getStringCellValue());
-                           } else if (cell == 6) {
-                                miengdat.setThanhtien(currentCell.getStringCellValue());
-                           } else if (cell == 7) {
-                                miengdat.setTenduong(currentCell.getStringCellValue());
-                           } else if (cell == 8) {
-                                miengdat.setLogioi(currentCell.getStringCellValue());
-                           } else if (cell == 9) {
-                                miengdat.setGhichu(currentCell.getStringCellValue());
+                MiengDat miengdat = null;
+                if (row > 1) {
+                   while (cellIterator.hasNext()) {
+                        
+                       Cell currentCell = cellIterator.next();
+                       if (currentCell.getCellTypeEnum() == CellType.STRING) {
+                           System.out.print(currentCell.getStringCellValue() + "--");
+                           if (cell == 1) {
+                                miengdat = service.findByProjectIdAndLoso(projectId, currentCell.getStringCellValue());
+                           } else if (miengdat != null) {
+                                if (cell == 2) {
+                                     miengdat.setSothuatheosodo(currentCell.getStringCellValue());
+                                } else if (cell == 3) {
+                                     miengdat.setSoto(currentCell.getStringCellValue());
+                                } else if (cell == 4) {
+                                     miengdat.setLoaidat(currentCell.getStringCellValue());
+                                } else if (cell == 5) {
+                                     miengdat.setDientich(currentCell.getStringCellValue());
+                                } else if (cell == 6) {
+                                     miengdat.setThanhtien(currentCell.getStringCellValue());
+                                } else if (cell == 7) {
+                                     miengdat.setTenduong(currentCell.getStringCellValue());
+                                } else if (cell == 8) {
+                                     miengdat.setLogioi(currentCell.getStringCellValue());
+                                } else if (cell == 9) {
+                                     miengdat.setGhichu(currentCell.getStringCellValue());
+                                }
+                                 
                            }
-                            
-                      }
-                  } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
-                      System.out.print(currentCell.getNumericCellValue() + "--");
-                  }
-                  cell++;
+                       } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+                           System.out.print(currentCell.getNumericCellValue() + "--");
+                       }
+                       cell++;
+                   }
+                   if (miengdat != null) {
+                        miengdat = service.save(miengdat);
+                        returnLst.add(miengdat.toDTO());
+                   }
+                   cell = 1;
               }
-              if (miengdat != null) {
-                   miengdat = service.save(miengdat);
-                   returnLst.add(miengdat.toDTO());
-              }
-              cell = 1;
               row++; 
           }
           return buildSuccess(returnLst);

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Diagram implements Serializable {
+     private static final long serialVersionUID = 1L;
      private String url;
      private Integer width;
      private Integer height;

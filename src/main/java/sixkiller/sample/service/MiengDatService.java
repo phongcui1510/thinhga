@@ -25,4 +25,8 @@ public class MiengDatService {
      public List<MiengDat> findByProjectId (String projectId) {
           return repository.findByProjectId(projectId);
      }
+     
+     public MiengDat findByProjectIdAndLoso (String projectId, String loso) {
+          return repository.findByProjectIdAndLoso(projectId, loso);
+     }
 }
