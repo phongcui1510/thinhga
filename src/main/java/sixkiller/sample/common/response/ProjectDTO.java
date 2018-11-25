@@ -9,7 +9,7 @@ import sixkiller.sample.domain.User;
 
 public class ProjectDTO implements Serializable {
      private static final long serialVersionUID = 1L;
-     private String id;
+     private String projectId;
      private String name;
      private Address address;
      private String owner;
@@ -19,11 +19,11 @@ public class ProjectDTO implements Serializable {
      private Diagram diagramImage;
      private List<User> admins;
      private List<User> salers;
-     public String getId() {
-          return id;
+     public String getProjectId() {
+          return projectId;
      }
-     public void setId(String id) {
-          this.id = id;
+     public void setProjectId(String projectId) {
+          this.projectId = projectId;
      }
      public String getName() {
           return name;

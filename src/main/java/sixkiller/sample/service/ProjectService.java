@@ -1,5 +1,7 @@
 package sixkiller.sample.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,11 @@ public class ProjectService {
           return repository.save(project);
      }
      
-     public Project getByCode (String code) {
-          return repository.findByCode(code);
+     public Project getByProjectId (String code) {
+          return repository.findByProjectId(code);
+     }
+     
+     public List<Project> getAll () {
+          return repository.findAll();
      }
 }

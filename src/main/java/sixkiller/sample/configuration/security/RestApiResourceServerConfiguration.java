@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.context.request.RequestAttributes;
 
 import sixkiller.sample.configuration.MyAuthenticationEntryPoint;
@@ -42,7 +43,9 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
                .and()
                .exceptionHandling()
                .accessDeniedHandler(accessDeniedHandler)
-               .authenticationEntryPoint(entryPoint);
+               .authenticationEntryPoint(entryPoint)
+               .and()
+               .logout().logoutSuccessUrl("/api/users/logout");
                
      }
      

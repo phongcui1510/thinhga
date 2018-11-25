@@ -1,36 +1,53 @@
 package sixkiller.sample.restapi.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import sixkiller.sample.domain.User;
-import sixkiller.sample.restapi.dto.ModifyUserDto;
-import sixkiller.sample.restapi.resource.ResourceCollection;
-import sixkiller.sample.restapi.resource.UserResource;
-import sixkiller.sample.service.exception.UpdatedUserNotFoundException;
-import sixkiller.sample.restapi.dto.CreateUserDto;
-import sixkiller.sample.service.UserService;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import sixkiller.sample.domain.User;
+import sixkiller.sample.restapi.dto.CreateUserDto;
+import sixkiller.sample.restapi.dto.ModifyUserDto;
+import sixkiller.sample.restapi.dto.SuccessMessageDto;
+import sixkiller.sample.restapi.resource.ResourceCollection;
+import sixkiller.sample.restapi.resource.UserResource;
+import sixkiller.sample.service.UserService;
+import sixkiller.sample.service.exception.UpdatedUserNotFoundException;
 
 /**
  * Created by ala on 9.5.16.
  */
 @RestController
 @RequestMapping("/api/users")
-public class UserRestController {
+public class UserRestController extends BaseController {
 
     public static final String OWNER = "authentication.name == #userName";
     public static final String ADMIN = "hasRole('ADMIN')";
 
     private UserService userService;
+    
+    @Autowired
+    private ConsumerTokenServices tokenStore;
 
     @PreAuthorize(ADMIN + " or " + OWNER)
     @RequestMapping(path = "/{userName}", method = RequestMethod.GET)
@@ -113,6 +130,23 @@ public class UserRestController {
         userService.delete(userOptional.get());
 
         return ResponseEntity.ok().build();
+    }
+    
+    @RequestMapping(value="/logout", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){    
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null) {
+            String tokenValue = authHeader.replace("Bearer", "").trim();
+            tokenValue = tokenValue.replace("bearer", "").trim();
+            Boolean a = tokenStore.revokeToken(tokenValue);
+        }
+        
+        SuccessMessageDto message = new SuccessMessageDto("OK", "Đăng xuất thành công.");
+        return buildSuccess(message);
     }
 
     @Autowired

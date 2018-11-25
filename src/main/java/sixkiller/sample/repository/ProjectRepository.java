@@ -8,5 +8,5 @@ import sixkiller.sample.domain.Project;
 @Repository
 public interface ProjectRepository extends MongoRepository<Project, String> {
      
-     public Project findByCode(String code);
+     public Project findByProjectId(String projectId);
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.google.gson.Gson;
 
 import sixkiller.sample.common.response.CommonResponseBody;
-import sixkiller.sample.restapi.dto.MessageDto;
+import sixkiller.sample.restapi.dto.FailMessageDto;
 
 @ControllerAdvice(basePackages = "sixkiller.sample.restapi.controller")
 public class GlobalExceptionHandler {
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
      
      protected ResponseEntity<String> buildFailure(String errorCode, String errorMsg) {
           Gson gson = new Gson();
-          MessageDto message = new MessageDto();
+          FailMessageDto message = new FailMessageDto();
           message.setError(errorCode);
           message.setErrorDescription(errorMsg);
           return new ResponseEntity<String>(gson.toJson(message), HttpStatus.BAD_REQUEST);

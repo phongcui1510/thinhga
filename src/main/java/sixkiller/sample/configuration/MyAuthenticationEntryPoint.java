@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 
 import sixkiller.sample.exception.GlobalExceptionHandler;
-import sixkiller.sample.restapi.dto.MessageDto;
+import sixkiller.sample.restapi.dto.FailMessageDto;
 
 @Component
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -34,7 +34,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
      protected String buildFailure(String errorCode, String errorMsg) {
           Gson gson = new Gson();
-          MessageDto message = new MessageDto();
+          FailMessageDto message = new FailMessageDto();
           message.setError(errorCode);
           message.setErrorDescription(errorMsg);
           return gson.toJson(message);

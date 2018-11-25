@@ -1,12 +1,12 @@
 package sixkiller.sample.restapi.dto;
 
-public class MessageDto {
+public class FailMessageDto {
      private String error;
      private String error_description;
-     public MessageDto() {
+     public FailMessageDto() {
           
      }
-     public MessageDto(String error, String description) {
+     public FailMessageDto(String error, String description) {
           this.error = error;
           this.error_description = description;
      }

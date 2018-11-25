@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.google.gson.Gson;
 
-import sixkiller.sample.restapi.dto.MessageDto;
+import sixkiller.sample.restapi.dto.FailMessageDto;
 
 public class BaseController {
      
@@ -16,7 +16,7 @@ public class BaseController {
      
      protected ResponseEntity<String> buildFailure(String errorCode, String errorMsg) {
           Gson gson = new Gson();
-          MessageDto message = new MessageDto();
+          FailMessageDto message = new FailMessageDto();
           message.setError(errorCode);
           message.setErrorDescription(errorMsg);
           return new ResponseEntity<String>(gson.toJson(message), HttpStatus.BAD_REQUEST);

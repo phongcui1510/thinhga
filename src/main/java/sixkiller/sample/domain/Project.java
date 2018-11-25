@@ -10,7 +10,7 @@ import sixkiller.sample.common.response.ProjectDTO;
 public class Project {
      @Id
      private String id;
-     private String code;
+     private String projectId;
      private String name;
      private Address address;
      private String owner;
@@ -20,11 +20,11 @@ public class Project {
      private Diagram diagramImage;
      private List<User> admins;
      private List<User> salers;
-     public String getCode() {
-          return code;
+     public String getProjectId() {
+          return projectId;
      }
-     public void setCode(String code) {
-          this.code = code;
+     public void setProject(String projectId) {
+          this.projectId = projectId;
      }
      public String getName() {
           return name;
@@ -83,7 +83,6 @@ public class Project {
      public ProjectDTO toDTO () {
           ProjectDTO dto = new ProjectDTO();
           BeanUtils.copyProperties(this, dto);
-          dto.setId(this.getCode());
           return dto;
      }
 }
